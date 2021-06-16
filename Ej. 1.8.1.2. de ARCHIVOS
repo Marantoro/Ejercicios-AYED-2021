@@ -1,0 +1,132 @@
+int cmpStringInt(string cadena, int numero){
+
+   int cadenaConvertida = stringToInt(cadena);
+
+   return cadenaConvertida - numero;
+}
+
+
+//                        F U N C I Ó N   M A I N
+int main()
+{
+   // Mayor valor, y en qué posiciones aparece (vesión 2).
+
+   // ESCRITURA.
+   /*FILE* archivoNumeros = fopen("numeros.x", "w + b");
+
+   string cadenaNumerica = "23,45,1,4,45,15,7,45,8,12";
+   char cadenaNumericaConvertida[26];
+   strcpy(cadenaNumericaConvertida, cadenaNumerica.c_str());
+
+   int largo = length(cadenaNumericaConvertida);
+   for(int i = 0; i < largo; i++){
+
+      write<char>(archivoNumeros, cadenaNumericaConvertida[i]);
+
+   }*/
+
+   // LECTURA.
+   FILE* archivoNumeros = fopen("numeros.x", "r + b");
+
+   Coll<string> collCaractNumericos = coll<string>(',');
+
+   char sigCaracter = read<char>(archivoNumeros);
+   string numero = "";
+   numero[0] = sigCaracter;
+
+   while(!feof(archivoNumeros)){
+
+      numero += sigCaracter;
+
+      sigCaracter = read<char>(archivoNumeros);
+
+   }
+
+   numero += ',';
+
+   cout << numero << endl;
+
+   char numeroCharArray[30];
+   strcpy(numeroCharArray, numero.c_str());
+
+   string sigSubconjunto = "";
+   for(int i = 0; i < length(numero); i++){
+
+      if(numeroCharArray[i] != ','){
+
+         sigSubconjunto += numeroCharArray[i];
+
+      } else{
+
+         collAdd<string>(collCaractNumericos, sigSubconjunto, stringToString);
+         sigSubconjunto = "";
+      }
+
+   }
+
+   cout << collSize<string>(collCaractNumericos) << endl;
+
+   // Itero la colección para mostrar sus elementos.
+   collReset<string>(collCaractNumericos);
+   while(collHasNext<string>(collCaractNumericos)){
+
+      string num = collNext<string>(collCaractNumericos, stringToString);
+      cout << num << " ";
+
+   }
+
+
+   // Itero la colección para encontrar el elemento más grande.
+   collReset<string>(collCaractNumericos);
+
+   string mayorElemento = collGetAt<string>(collCaractNumericos, 0, stringToString);
+   string sigElementoBis;
+   int mayorElementoInt = stringToInt(mayorElemento);
+   int sigElementoIntBis;
+
+   while(collHasNext<string>(collCaractNumericos)){
+
+      sigElementoBis = collNext<string>(collCaractNumericos, stringToString);
+      sigElementoIntBis = stringToInt(sigElementoBis);
+
+      if(sigElementoIntBis > mayorElementoInt){
+
+         mayorElemento = sigElementoBis;
+         mayorElementoInt = sigElementoIntBis;
+         cout << "\nEl mayor hasta ahora es: " << mayorElementoInt << endl;
+
+      }
+
+   }
+
+
+   // Itero la colección para mostrar el/los índice/s en el/los que se encuentra el elemento más grande.
+
+   /*collReset<string>(collCaractNumericos);
+   while(collHasNext<string>(collCaractNumericos)){
+
+      string elementoActual = collNext<string>(collCaractNumericos, stringToString);
+
+      if(elementoActual == mayorElemento){
+
+         int posicionDelMaximoElemento = collFind<string>(collCaractNumericos, mayorElementoInt, cmpStringInt, stringToString);
+         cout << posicionDelMaximoElemento << " ";
+
+      }
+
+   }*/
+
+   collReset<string>(collCaractNumericos);
+   for(int i = 0; collHasNext<string>(collCaractNumericos); i++){
+
+      string elementoActual = collNext<string>(collCaractNumericos, stringToString);
+
+      if(elementoActual == mayorElemento){
+
+         cout << i << " ";
+
+      }
+
+   }
+
+   fclose(archivoNumeros);
